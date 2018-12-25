@@ -80,4 +80,7 @@ namespace golos { namespace chain {
             int depth_ = 0;
         };
 
+        DEFINE_EVALUATOR(worker_proposal)
+        DEFINE_EVALUATOR(worker_proposal_delete)
+
 } } // golos::chain

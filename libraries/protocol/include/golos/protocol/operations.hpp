@@ -3,6 +3,7 @@
 #include <golos/protocol/operation_util.hpp>
 #include <golos/protocol/proposal_operations.hpp>
 #include <golos/protocol/steem_operations.hpp>
+#include <golos/protocol/worker_proposal_operations.hpp>
 #include <golos/protocol/steem_virtual_operations.hpp>
 
 namespace golos { namespace protocol {
@@ -69,6 +70,8 @@ namespace golos { namespace protocol {
                 break_free_referral_operation,
                 delegate_vesting_shares_with_interest_operation,
                 reject_vesting_shares_delegation_operation,
+                worker_proposal_operation,
+                worker_proposal_delete_operation,
 
                 /// virtual operations below this point
                 fill_convert_request_operation,
