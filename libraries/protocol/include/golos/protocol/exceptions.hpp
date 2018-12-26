@@ -224,6 +224,7 @@ namespace golos {
             cannot_delete_comment_with_replies,
             cannot_delete_comment_with_positive_votes,
             cannot_delete_comment_with_worker_proposal,
+            cannot_delete_comment_with_worker_techspec,
             comment_options_requires_no_rshares,
             curation_rewards_cannot_be_reenabled,
             voting_cannot_be_reenabled,
@@ -335,10 +336,14 @@ namespace golos {
             cannot_specify_owner_key_unless_creating_account,
             witness_must_be_created_before_minning,
 
-            // worker proposals
+            // workers
             worker_proposal_can_be_created_only_on_post,
             cannot_delete_worker_proposal_with_approved_techspec,
             cannot_delete_worker_proposal_with_premade_work,
+            techspec_can_be_created_only_under_proposal_post,
+            this_worker_proposal_already_has_approved_techspec,
+            this_worker_proposal_has_premade_work,
+            cannot_change_cost_symbol,
 
             // custom operations
             inner_authorities_does_not_match_outer,
@@ -496,6 +501,7 @@ FC_REFLECT_ENUM(golos::logic_exception::error_types,
         (cannot_delete_comment_with_replies)
         (cannot_delete_comment_with_positive_votes)
         (cannot_delete_comment_with_worker_proposal)
+        (cannot_delete_comment_with_worker_techspec)
         (comment_options_requires_no_rshares)
         (curation_rewards_cannot_be_reenabled)
         (voting_cannot_be_reenabled)
@@ -607,10 +613,14 @@ FC_REFLECT_ENUM(golos::logic_exception::error_types,
         (cannot_specify_owner_key_unless_creating_account)
         (witness_must_be_created_before_minning)
 
-        // worker proposals
+        // workers
         (worker_proposal_can_be_created_only_on_post)
         (cannot_delete_worker_proposal_with_approved_techspec)
         (cannot_delete_worker_proposal_with_premade_work)
+        (techspec_can_be_created_only_under_proposal_post)
+        (this_worker_proposal_already_has_approved_techspec)
+        (this_worker_proposal_has_premade_work)
+        (cannot_change_cost_symbol)
 
         // custom operations
         (inner_authorities_does_not_match_outer)
