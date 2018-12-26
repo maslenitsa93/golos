@@ -100,10 +100,11 @@
 #define STEEMIT_INFLATION_RATE_START_PERCENT    (1500) // Fixes block 0 to 15%
 #define STEEMIT_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
 #define STEEMIT_INFLATION_NARROWING_PERIOD      (250000) // Narrow 0.01% every 250k blocks
-#define STEEMIT_CONTENT_REWARD_PERCENT          (66.67*STEEMIT_1_PERCENT) //66% of inflation,
+#define STEEMIT_CONTENT_REWARD_PERCENT          (60.003*STEEMIT_1_PERCENT) //60% of inflation,
 //7.125% inflation
-#define STEEMIT_VESTING_FUND_PERCENT            (26.67*STEEMIT_1_PERCENT) //26% of inflation,
+#define STEEMIT_VESTING_FUND_PERCENT            (24.003*STEEMIT_1_PERCENT) //24% of inflation,
 //1.425% inflation
+#define STEEMIT_WORKER_FUND_PERCENT             (10.000*STEEMIT_1_PERCENT) //10% of inflation,
 
 #define STEEMIT_MINER_PAY_PERCENT               (STEEMIT_1_PERCENT) // 1%
 #define STEEMIT_MIN_RATION                      100000
@@ -332,10 +333,11 @@
 #define STEEMIT_INFLATION_RATE_START_PERCENT    (1515) // Fixes block 3860400 to 15%
 #define STEEMIT_INFLATION_RATE_STOP_PERCENT     (95) // 0.95%
 #define STEEMIT_INFLATION_NARROWING_PERIOD      (250000) // Narrow 0.01% every 250k blocks
-#define STEEMIT_CONTENT_REWARD_PERCENT          (66.67*STEEMIT_1_PERCENT) //66% of inflation,
+#define STEEMIT_CONTENT_REWARD_PERCENT          (60.003*STEEMIT_1_PERCENT) //60% of inflation,
 //7.125% inflation
-#define STEEMIT_VESTING_FUND_PERCENT            (26.67*STEEMIT_1_PERCENT) //26% of inflation,
+#define STEEMIT_VESTING_FUND_PERCENT            (24.003*STEEMIT_1_PERCENT) //24% of inflation,
 //1.425% inflation
+#define STEEMIT_WORKER_FUND_PERCENT             (10.000*STEEMIT_1_PERCENT) //10% of inflation,
 
 #define STEEMIT_MINER_PAY_PERCENT               (STEEMIT_1_PERCENT) // 1%
 #define STEEMIT_MIN_RATION                      100000

@@ -2557,9 +2557,9 @@ namespace golos { namespace chain {
        /**
         *  At a start overall the network has an inflation rate of 15.15% of virtual golos per year.
         *  Each year the inflation rate is reduced by 0.42% and stops at 0.95% of virtual golos per year in 33 years.
-        *  66.67% of inflation is directed to content reward pool
-        *  26.67% of inflation is directed to vesting fund
-        *  6.66% of inflation is directed to witness pay
+        *  60.003% of inflation is directed to content reward pool
+        *  24.003% of inflation is directed to vesting fund
+        *  5.994% of inflation is directed to witness pay
         *
         *  This method pays out vesting, reward shares and witnesses every block.
         */
@@ -2588,13 +2588,33 @@ namespace golos { namespace chain {
                 auto new_steem =
                         (props.virtual_supply.amount * current_inflation_rate) /
                         (int64_t(STEEMIT_100_PERCENT) * int64_t(STEEMIT_BLOCKS_PER_YEAR));
-                auto content_reward =
+
+                fc::safe<int64_t> content_reward = 0;
+                fc::safe<int64_t> vesting_reward = 0;
+                fc::safe<int64_t> witness_reward = 0;
+                fc::safe<int64_t> worker_reward = 0;
+
+                if (has_hardfork(STEEMIT_HARDFORK_0_20__1013)) {
+                    content_reward =
+                        (new_steem * STEEMIT_CONTENT_REWARD_PERCENT) /
+                        STEEMIT_100_PERCENT; /// 60.003% to content creator
+                    vesting_reward =
+                        (new_steem * STEEMIT_VESTING_FUND_PERCENT) /
+                        STEEMIT_100_PERCENT; /// 24.003% to vesting fund
+                    worker_reward =
+                        (new_steem * STEEMIT_WORKER_FUND_PERCENT) /
+                        STEEMIT_100_PERCENT; /// 10.000% to worker fund
+                    witness_reward = new_steem - content_reward - vesting_reward - worker_reward; /// Remaining 5.994% to witness pay
+                } else {
+                    content_reward =
                         (new_steem * STEEMIT_CONTENT_REWARD_PERCENT) /
                         STEEMIT_100_PERCENT; /// 66.67% to content creator
-                auto vesting_reward =
+                    vesting_reward =
                         (new_steem * STEEMIT_VESTING_FUND_PERCENT) /
                         STEEMIT_100_PERCENT; /// 26.67% to vesting fund
-                auto witness_reward = new_steem - content_reward - vesting_reward; /// Remaining 6.66% to witness pay
+                    witness_reward = new_steem - content_reward - vesting_reward; /// Remaining 6.66% to witness pay
+                }
+
                 witness_reward *= STEEMIT_MAX_WITNESSES;
 
                 if (cwit.schedule == witness_object::timeshare) {
@@ -2610,6 +2630,14 @@ namespace golos { namespace chain {
                 witness_reward /= wso.witness_pay_normalization_factor;
 
                 new_steem = content_reward + vesting_reward + witness_reward;
+
+                if (worker_reward != 0) {
+                    new_steem += worker_reward;
+
+                    modify(props, [&](dynamic_global_property_object &p) {
+                        p.total_worker_fund_steem += asset(worker_reward, STEEM_SYMBOL);
+                    });
+                }
 
                 modify(props, [&](dynamic_global_property_object &p) {
                     p.total_vesting_fund_steem += asset(vesting_reward, STEEM_SYMBOL);

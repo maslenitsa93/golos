@@ -1840,6 +1840,7 @@ namespace mongo_db {
             format_value(body, "total_vesting_shares", dgpo.total_vesting_shares);
             format_value(body, "total_reward_fund_steem", dgpo.total_reward_fund_steem);
             format_value(body, "total_reward_shares2", dgpo.total_reward_shares2);
+            format_value(body, "total_worker_fund_steem", dgpo.total_worker_fund_steem);
 
             format_value(body, "sbd_interest_rate", dgpo.sbd_interest_rate);
 
