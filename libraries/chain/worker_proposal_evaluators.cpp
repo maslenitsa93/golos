@@ -64,11 +64,9 @@ namespace golos { namespace chain {
 
         const auto now = _db.head_block_time();
 
-        GOLOS_CHECK_PARAM("data", {
-            GOLOS_CHECK_VALUE(o.data.specification_deadline > now,
-                "Specification deadline should be in future");
-            GOLOS_CHECK_VALUE(o.data.development_deadline > now,
-                "Development deadline should be in future");
+        GOLOS_CHECK_PARAM("specification_deadline", {
+            GOLOS_CHECK_VALUE(o.specification_deadline > now,
+                "Deadline should be in future");
         });
 
         const auto& comment = _db.get_comment(o.author, o.permlink);
@@ -89,16 +87,21 @@ namespace golos { namespace chain {
         const auto& wto_idx = _db.get_index<worker_techspec_index, by_permlink>();
         auto wto_itr = wto_idx.find(std::make_tuple(o.author, o.permlink));
         if (wto_itr != wto_idx.end()) {
-            GOLOS_CHECK_LOGIC(o.data.specification_cost.symbol == wto_itr->data.specification_cost.symbol,
+            GOLOS_CHECK_LOGIC(o.specification_cost.symbol == wto_itr->specification_cost.symbol,
                 logic_exception::cannot_change_cost_symbol,
                 "Cannot change cost symbol");
-            GOLOS_CHECK_LOGIC(o.data.development_cost.symbol == wto_itr->data.development_cost.symbol,
+            GOLOS_CHECK_LOGIC(o.development_cost.symbol == wto_itr->development_cost.symbol,
                 logic_exception::cannot_change_cost_symbol,
                 "Cannot change cost symbol");
 
             _db.modify(*wto_itr, [&](worker_techspec_object& wto) {
-                wto.data = o.data;
                 wto.modified = now;
+                wto.specification_cost = o.specification_cost;
+                wto.specification_deadline = o.specification_deadline;
+                wto.development_cost = o.development_cost;
+                wto.development_deadline = o.development_deadline;
+                wto.payments_count = o.payments_count;
+                wto.payments_interval = o.payments_interval;
             });
 
             return;
@@ -107,8 +110,13 @@ namespace golos { namespace chain {
         _db.create<worker_techspec_object>([&](worker_techspec_object& wto) {
             wto.author = o.author;
             wto.permlink = comment.permlink;
-            wto.data = o.data;
             wto.created = now;
+            wto.specification_cost = o.specification_cost;
+            wto.specification_deadline = o.specification_deadline;
+            wto.development_cost = o.development_cost;
+            wto.development_deadline = o.development_deadline;
+            wto.payments_count = o.payments_count;
+            wto.payments_interval = o.payments_interval;
         });
     }
 

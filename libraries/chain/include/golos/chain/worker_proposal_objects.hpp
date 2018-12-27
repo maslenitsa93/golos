@@ -56,7 +56,12 @@ namespace golos { namespace chain {
         shared_string permlink;
         time_point_sec created;
         time_point_sec modified;
-        techspec_data data;
+        asset specification_cost;
+        time_point_sec specification_deadline;
+        asset development_cost;
+        time_point_sec development_deadline;
+        uint16_t payments_count;
+        uint32_t payments_interval;
     };
 
     struct by_permlink;

@@ -40,19 +40,15 @@ namespace golos { namespace protocol {
         }
     };
 
-    struct techspec_data {
+    struct worker_techspec_operation : public base_operation {
+        account_name_type author;
+        std::string permlink;
         asset specification_cost;
         time_point_sec specification_deadline;
         asset development_cost;
         time_point_sec development_deadline;
         uint16_t payments_count;
         uint32_t payments_interval;
-    };
-
-    struct worker_techspec_operation : public base_operation {
-        account_name_type author;
-        std::string permlink;
-        techspec_data data;
 
         extensions_type extensions;
 
@@ -87,11 +83,10 @@ FC_REFLECT(
     (golos::protocol::worker_proposal_delete_operation),
     (author)(permlink)(extensions))
 
-FC_REFLECT((golos::protocol::techspec_data),
-    (specification_cost)(specification_deadline)(development_cost)(development_deadline)(payments_count)(payments_interval))
 FC_REFLECT(
     (golos::protocol::worker_techspec_operation),
-    (author)(permlink)(data)(extensions))
+    (author)(permlink)(specification_cost)(specification_deadline)(development_cost)(development_deadline)
+    (payments_count)(payments_interval)(extensions))
 
 FC_REFLECT(
     (golos::protocol::worker_techspec_delete_operation),
