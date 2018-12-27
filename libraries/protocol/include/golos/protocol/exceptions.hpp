@@ -223,6 +223,7 @@ namespace golos {
             replies_are_not_allowed,
             cannot_delete_comment_with_replies,
             cannot_delete_comment_with_positive_votes,
+            cannot_delete_comment_with_worker_proposal,
             comment_options_requires_no_rshares,
             curation_rewards_cannot_be_reenabled,
             voting_cannot_be_reenabled,
@@ -333,6 +334,11 @@ namespace golos {
             account_already_scheduled_for_work,
             cannot_specify_owner_key_unless_creating_account,
             witness_must_be_created_before_minning,
+
+            // worker proposals
+            worker_proposal_can_be_created_only_on_post,
+            cannot_delete_worker_proposal_with_approved_techspec,
+            cannot_delete_worker_proposal_with_premade_work,
 
             // custom operations
             inner_authorities_does_not_match_outer,
@@ -489,6 +495,7 @@ FC_REFLECT_ENUM(golos::logic_exception::error_types,
         (replies_are_not_allowed)
         (cannot_delete_comment_with_replies)
         (cannot_delete_comment_with_positive_votes)
+        (cannot_delete_comment_with_worker_proposal)
         (comment_options_requires_no_rshares)
         (curation_rewards_cannot_be_reenabled)
         (voting_cannot_be_reenabled)
@@ -599,6 +606,11 @@ FC_REFLECT_ENUM(golos::logic_exception::error_types,
         (account_already_scheduled_for_work)
         (cannot_specify_owner_key_unless_creating_account)
         (witness_must_be_created_before_minning)
+
+        // worker proposals
+        (worker_proposal_can_be_created_only_on_post)
+        (cannot_delete_worker_proposal_with_approved_techspec)
+        (cannot_delete_worker_proposal_with_premade_work)
 
         // custom operations
         (inner_authorities_does_not_match_outer)

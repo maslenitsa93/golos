@@ -16,6 +16,7 @@ list(APPEND ${CURRENT_TARGET}_HEADERS
         include/golos/protocol/protocol.hpp
         include/golos/protocol/sign_state.hpp
         include/golos/protocol/steem_operations.hpp
+        include/golos/protocol/worker_proposal_operations.hpp
         include/golos/protocol/steem_virtual_operations.hpp
         include/golos/protocol/transaction.hpp
         include/golos/protocol/types.hpp
@@ -33,6 +34,7 @@ list(APPEND ${CURRENT_TARGET}_SOURCES
         proposal_operations.cpp
         sign_state.cpp
         steem_operations.cpp
+        worker_proposal_operations.cpp
         transaction.cpp
         types.cpp
         version.cpp

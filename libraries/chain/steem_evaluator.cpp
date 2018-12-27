@@ -3,6 +3,7 @@
 #include <golos/chain/custom_operation_interpreter.hpp>
 #include <golos/chain/steem_objects.hpp>
 #include <golos/chain/block_summary_object.hpp>
+#include <golos/chain/worker_proposal_objects.hpp>
 
 #define GOLOS_CHECK_BALANCE(ACCOUNT, TYPE, REQUIRED ...) \
     FC_EXPAND_MACRO( \
@@ -452,6 +453,14 @@ namespace golos { namespace chain {
             }
             if (comment.net_rshares > 0) {
                 return;
+            }
+
+            if (_db.has_hardfork(STEEMIT_HARDFORK_0_20__1013)) {
+                const auto& wpo_idx = db().get_index<worker_proposal_index, by_permlink>();
+                auto wpo_itr = wpo_idx.find(std::make_tuple(o.author, o.permlink));
+                GOLOS_CHECK_LOGIC(wpo_itr == wpo_idx.end(),
+                    logic_exception::cannot_delete_comment_with_worker_proposal,
+                    "Cannot delete a comment with worker proposal.");
             }
 
             const auto &vote_idx = _db.get_index<comment_vote_index>().indices().get<by_comment_voter>();

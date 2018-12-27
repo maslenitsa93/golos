@@ -20,6 +20,7 @@
 #include <golos/chain/operation_notification.hpp>
 #include <golos/chain/proposal_object.hpp>
 #include <golos/chain/curation_info.hpp>
+#include <golos/chain/worker_proposal_objects.hpp>
 
 #include <fc/smart_ref_impl.hpp>
 
@@ -3050,6 +3051,8 @@ namespace golos { namespace chain {
             _my->_evaluator_registry.register_evaluator<proposal_delete_evaluator>();
             _my->_evaluator_registry.register_evaluator<chain_properties_update_evaluator>();
             _my->_evaluator_registry.register_evaluator<break_free_referral_evaluator>();
+            _my->_evaluator_registry.register_evaluator<worker_proposal_evaluator>();
+            _my->_evaluator_registry.register_evaluator<worker_proposal_delete_evaluator>();
         }
 
         void database::set_custom_operation_interpreter(const std::string &id, std::shared_ptr<custom_operation_interpreter> registry) {
@@ -3095,6 +3098,7 @@ namespace golos { namespace chain {
             add_core_index<account_metadata_index>(*this);
             add_core_index<proposal_index>(*this);
             add_core_index<required_approval_index>(*this);
+            add_core_index<worker_proposal_index>(*this);
 
             _plugin_index_signal();
         }
