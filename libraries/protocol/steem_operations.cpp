@@ -4,17 +4,13 @@
 #include <fc/io/json.hpp>
 
 namespace golos { namespace protocol {
-
-        /// TODO: after the hardfork, we can rename this method validate_permlink because it is strictily less restrictive than before
-        ///  Issue #56 contains the justificiation for allowing any UTF-8 string to serve as a permlink, content will be grouped by tags
-        ///  going forward.
-        inline void validate_permlink(const string &permlink) {
-            GOLOS_CHECK_VALUE(permlink.size() < STEEMIT_MAX_PERMLINK_LENGTH, "permlink is too long");
-            GOLOS_CHECK_VALUE(fc::is_utf8(permlink), "permlink not formatted in UTF8");
+        void validate_account_name(const std::string &name) {
+            GOLOS_CHECK_VALUE(is_valid_account_name(name), "Account name ${name} is invalid", ("name", name));
         }
 
-        static inline void validate_account_name(const string &name) {
-            GOLOS_CHECK_VALUE(is_valid_account_name(name), "Account name ${name} is invalid", ("name", name));
+        void validate_permlink(const std::string &permlink) {
+            GOLOS_CHECK_VALUE(permlink.size() < STEEMIT_MAX_PERMLINK_LENGTH, "permlink is too long");
+            GOLOS_CHECK_VALUE(fc::is_utf8(permlink), "permlink not formatted in UTF8");
         }
 
         inline void validate_account_json_metadata(const string& json_metadata) {

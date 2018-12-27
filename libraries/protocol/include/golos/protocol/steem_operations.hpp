@@ -10,6 +10,10 @@
 
 namespace golos { namespace protocol {
 
+        void validate_account_name(const std::string &name);
+
+        void validate_permlink(const std::string &permlink);
+
         struct account_create_operation : public base_operation {
             asset fee;
             account_name_type creator;
@@ -1328,6 +1332,7 @@ namespace golos { namespace protocol {
                 a.insert(delegatee);
             }
         };
+
 } } // golos::protocol
 
 
