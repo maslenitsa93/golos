@@ -17,6 +17,9 @@ namespace golos { namespace protocol {
     void worker_techspec_operation::validate() const {
         GOLOS_CHECK_PARAM_ACCOUNT(author);
         GOLOS_CHECK_PARAM(permlink, validate_permlink(permlink));
+        GOLOS_CHECK_PARAM_ACCOUNT(worker_proposal_author);
+        GOLOS_CHECK_PARAM(worker_proposal_permlink, validate_permlink(worker_proposal_permlink));
+
         GOLOS_CHECK_PARAM(specification_cost, {
             GOLOS_CHECK_VALUE_GE(specification_cost.amount, 0);
         });

@@ -46,7 +46,7 @@ namespace golos { namespace chain {
 
         template <typename Constructor, typename Allocator>
         worker_techspec_object(Constructor&& c, allocator <Allocator> a)
-            : permlink(a) {
+            : permlink(a), worker_proposal_permlink(a) {
             c(*this);
         };
 
@@ -54,6 +54,8 @@ namespace golos { namespace chain {
 
         account_name_type author;
         shared_string permlink;
+        account_name_type worker_proposal_author;
+        shared_string worker_proposal_permlink;
         time_point_sec created;
         time_point_sec modified;
         asset specification_cost;
@@ -83,6 +85,8 @@ namespace golos { namespace chain {
                     chainbase::strcmp_less>>>,
         allocator<worker_proposal_object>>;
 
+    struct by_worker_proposal;
+
     using worker_techspec_index = multi_index_container<
         worker_techspec_object,
         indexed_by<
@@ -95,6 +99,15 @@ namespace golos { namespace chain {
                     worker_techspec_object,
                     member<worker_techspec_object, account_name_type, &worker_techspec_object::author>,
                     member<worker_techspec_object, shared_string, &worker_techspec_object::permlink>>,
+                composite_key_compare<
+                    std::less<account_name_type>,
+                    chainbase::strcmp_less>>,
+            ordered_unique<
+                tag<by_worker_proposal>,
+                composite_key<
+                    worker_techspec_object,
+                    member<worker_techspec_object, account_name_type, &worker_techspec_object::worker_proposal_author>,
+                    member<worker_techspec_object, shared_string, &worker_techspec_object::worker_proposal_permlink>>,
                 composite_key_compare<
                     std::less<account_name_type>,
                     chainbase::strcmp_less>>>,

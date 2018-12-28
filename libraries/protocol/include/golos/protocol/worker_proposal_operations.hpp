@@ -43,6 +43,8 @@ namespace golos { namespace protocol {
     struct worker_techspec_operation : public base_operation {
         account_name_type author;
         std::string permlink;
+        account_name_type worker_proposal_author;
+        std::string worker_proposal_permlink;
         asset specification_cost;
         uint32_t specification_eta;
         asset development_cost;
@@ -85,8 +87,8 @@ FC_REFLECT(
 
 FC_REFLECT(
     (golos::protocol::worker_techspec_operation),
-    (author)(permlink)(specification_cost)(specification_eta)(development_cost)(development_eta)
-    (payments_count)(payments_interval)(extensions))
+    (author)(permlink)(worker_proposal_author)(worker_proposal_permlink)(specification_cost)(specification_eta)
+    (development_cost)(development_eta)(payments_count)(payments_interval)(extensions))
 
 FC_REFLECT(
     (golos::protocol::worker_techspec_delete_operation),

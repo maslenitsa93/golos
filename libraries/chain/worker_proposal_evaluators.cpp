@@ -56,6 +56,14 @@ namespace golos { namespace chain {
             logic_exception::cannot_delete_worker_proposal_with_premade_work,
             "Cannot delete worker proposal with premade work");
 
+        const auto& wto_idx = _db.get_index<worker_techspec_index, by_worker_proposal>();
+        auto wto_itr = wto_idx.find(std::make_tuple(o.author, o.permlink));
+        while (wto_itr != wto_idx.end()) {
+            const auto& cur_wto = *wto_itr;
+            ++wto_itr;
+            _db.remove(cur_wto);
+        }
+
         _db.remove(*wpo_itr);
     }
 
@@ -66,12 +74,16 @@ namespace golos { namespace chain {
 
         const auto& comment = _db.get_comment(o.author, o.permlink);
 
+        GOLOS_CHECK_LOGIC(comment.parent_author == STEEMIT_ROOT_POST_PARENT,
+            logic_exception::worker_techspec_can_be_created_only_on_post,
+            "Worker techspec can be created only on post");
+
         const auto& wpo_idx = _db.get_index<worker_proposal_index, by_permlink>();
-        auto wpo_itr = wpo_idx.find(std::make_tuple(comment.parent_author, comment.parent_permlink));
+        auto wpo_itr = wpo_idx.find(std::make_tuple(o.worker_proposal_author, o.worker_proposal_permlink));
 
         GOLOS_CHECK_LOGIC(wpo_itr != wpo_idx.end(),
-            logic_exception::techspec_can_be_created_only_under_proposal_post,
-            "Techspec can be created only under proposal post");
+            logic_exception::worker_techspec_can_be_created_only_for_existing_proposal,
+            "Worker techspec can be created only for existing proposal");
         GOLOS_CHECK_LOGIC(wpo_itr->state == created,
             logic_exception::this_worker_proposal_already_has_approved_techspec,
             "This worker proposal already has approved techspec");
@@ -79,8 +91,8 @@ namespace golos { namespace chain {
             logic_exception::this_worker_proposal_has_premade_work,
             "This worker proposal has premade work");
 
-        const auto& wto_idx = _db.get_index<worker_techspec_index, by_permlink>();
-        auto wto_itr = wto_idx.find(std::make_tuple(o.author, o.permlink));
+        const auto& wto_idx = _db.get_index<worker_techspec_index, by_worker_proposal>();
+        auto wto_itr = wto_idx.find(std::make_tuple(o.worker_proposal_author, o.worker_proposal_permlink));
         if (wto_itr != wto_idx.end()) {
             GOLOS_CHECK_LOGIC(o.specification_cost.symbol == wto_itr->specification_cost.symbol,
                 logic_exception::cannot_change_cost_symbol,
@@ -105,6 +117,8 @@ namespace golos { namespace chain {
         _db.create<worker_techspec_object>([&](worker_techspec_object& wto) {
             wto.author = o.author;
             wto.permlink = comment.permlink;
+            wto.worker_proposal_author = o.worker_proposal_author;
+            from_string(wto.worker_proposal_permlink, o.worker_proposal_permlink);
             wto.created = now;
             wto.specification_cost = o.specification_cost;
             wto.specification_eta = o.specification_eta;
@@ -123,10 +137,6 @@ namespace golos { namespace chain {
         if (wto_itr == wto_idx.end()) {
             GOLOS_THROW_MISSING_OBJECT("worker_techspec_object", fc::mutable_variant_object()("author",o.author)("permlink",o.permlink));
         }
-
-        // TODO: check wpo has not this techspec as approved
-        //const auto& wpo_idx = _db.get_index<worker_proposal_index, by_permlink>();
-        //auto wpo_itr = wpo_idx.find(std::make_tuple(comment.parent_author, comment.parent_permlink));
 
         _db.remove(*wto_itr);
     }
