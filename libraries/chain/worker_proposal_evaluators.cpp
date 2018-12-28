@@ -64,11 +64,6 @@ namespace golos { namespace chain {
 
         const auto now = _db.head_block_time();
 
-        GOLOS_CHECK_PARAM("specification_deadline", {
-            GOLOS_CHECK_VALUE(o.specification_deadline > now,
-                "Deadline should be in future");
-        });
-
         const auto& comment = _db.get_comment(o.author, o.permlink);
 
         const auto& wpo_idx = _db.get_index<worker_proposal_index, by_permlink>();
@@ -97,9 +92,9 @@ namespace golos { namespace chain {
             _db.modify(*wto_itr, [&](worker_techspec_object& wto) {
                 wto.modified = now;
                 wto.specification_cost = o.specification_cost;
-                wto.specification_deadline = o.specification_deadline;
+                wto.specification_eta = o.specification_eta;
                 wto.development_cost = o.development_cost;
-                wto.development_deadline = o.development_deadline;
+                wto.development_eta = o.development_eta;
                 wto.payments_count = o.payments_count;
                 wto.payments_interval = o.payments_interval;
             });
@@ -112,9 +107,9 @@ namespace golos { namespace chain {
             wto.permlink = comment.permlink;
             wto.created = now;
             wto.specification_cost = o.specification_cost;
-            wto.specification_deadline = o.specification_deadline;
+            wto.specification_eta = o.specification_eta;
             wto.development_cost = o.development_cost;
-            wto.development_deadline = o.development_deadline;
+            wto.development_eta = o.development_eta;
             wto.payments_count = o.payments_count;
             wto.payments_interval = o.payments_interval;
         });

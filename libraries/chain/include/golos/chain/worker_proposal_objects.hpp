@@ -57,9 +57,9 @@ namespace golos { namespace chain {
         time_point_sec created;
         time_point_sec modified;
         asset specification_cost;
-        time_point_sec specification_deadline;
+        uint32_t specification_eta;
         asset development_cost;
-        time_point_sec development_deadline;
+        uint32_t development_eta;
         uint16_t payments_count;
         uint32_t payments_interval;
     };
