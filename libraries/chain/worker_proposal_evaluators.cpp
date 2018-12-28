@@ -56,14 +56,6 @@ namespace golos { namespace chain {
             logic_exception::cannot_delete_worker_proposal_with_premade_work,
             "Cannot delete worker proposal with premade work");
 
-        const auto& wto_idx = _db.get_index<worker_techspec_index, by_worker_proposal>();
-        auto wto_itr = wto_idx.find(std::make_tuple(o.author, o.permlink));
-        while (wto_itr != wto_idx.end()) {
-            const auto& cur_wto = *wto_itr;
-            ++wto_itr;
-            _db.remove(cur_wto);
-        }
-
         _db.remove(*wpo_itr);
     }
 
