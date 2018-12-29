@@ -33,7 +33,7 @@ namespace golos { namespace chain {
         id_type techspec_id; // TODO
         account_name_type worker;
         time_point_sec work_beginning_time;
-        uint8_t worker_payments_count;
+        uint8_t worker_payments_count = 0;
         time_point_sec payment_beginning_time;
         time_point_sec created;
         time_point_sec modified;
@@ -59,6 +59,9 @@ namespace golos { namespace chain {
         allocator<worker_proposal_object>>;
 
 } } // golos::chain
+
+FC_REFLECT_ENUM(golos::chain::worker_proposal_state,
+        (created)(techspec)(work)(witnesses_review)(payment)(closed))
 
 CHAINBASE_SET_INDEX_TYPE(
     golos::chain::worker_proposal_object,

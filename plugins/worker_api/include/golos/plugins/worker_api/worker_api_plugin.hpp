@@ -2,6 +2,8 @@
 
 #include <appbase/plugin.hpp>
 #include <golos/chain/database.hpp>
+#include <golos/plugins/worker_api/worker_api_objects.hpp>
+#include <golos/plugins/worker_api/worker_proposal_query.hpp>
 
 #include <golos/plugins/json_rpc/plugin.hpp>
 
@@ -9,7 +11,8 @@ namespace golos { namespace plugins { namespace worker_api {
 
     using namespace golos::chain;
 
-    // TODO: DEFINE_API_ARGS
+    DEFINE_API_ARGS(get_worker_proposals_by_created, json_rpc::msg_pack, std::vector<worker_proposal_api_object>)
+    DEFINE_API_ARGS(get_worker_proposals_by_rshares, json_rpc::msg_pack, std::vector<worker_proposal_api_object>)
 
     class worker_api_plugin final : public appbase::plugin<worker_api_plugin> {
     public:
@@ -31,7 +34,13 @@ namespace golos { namespace plugins { namespace worker_api {
 
         static const std::string& name();
 
-        // TODO: DECLARE_API
+        template <class Order>
+        std::vector<worker_proposal_api_object> get_worker_proposals(const worker_proposal_query& query, Order&& order);
+
+        DECLARE_API(
+            (get_worker_proposals_by_created)
+            (get_worker_proposals_by_rshares)
+        )
 
     private:
         class worker_api_plugin_impl;
